@@ -1,0 +1,4 @@
+outs:
+- md5: a38ba160a65904f4a2f45910221aab64
+  size: 1048470
+  path: annotation-result.txt
