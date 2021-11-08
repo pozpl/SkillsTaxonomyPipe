@@ -1,0 +1,19 @@
+schema: '2.0'
+stages:
+  prepare_annotations:
+    cmd: pipenv run python ./src/ner/convert_bliou_to_bio.py ./data/annotation/annotation-result-orig.txt
+      ./data/annotation/annotation-result.txt --out data/annotation/annotation-result-BIO.txt
+    deps:
+    - path: ./src/ner/convert_bliou_to_bio.py
+      md5: 58229dba68e2cd8d80fa8ec7f45476c9
+      size: 1940
+    - path: data/annotation/annotation-result-orig.txt
+      md5: f368553363edd3d250db16bfe443e176
+      size: 663696
+    - path: data/annotation/annotation-result.txt
+      md5: a38ba160a65904f4a2f45910221aab64
+      size: 1048470
+    outs:
+    - path: data/annotation/annotation-result-BIO.txt
+      md5: 7f18755701f4ec76d05641cba2a305be
+      size: 1376730
