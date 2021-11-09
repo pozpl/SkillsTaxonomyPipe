@@ -17,3 +17,21 @@ stages:
       - flair.language_model_train.corpus_dir
     outs:
       - data/corpus/jobs
+  finetune_forward_lm:
+    cmd: pipenv run python src/ner/flair/train_language_model.py --out=models/jobs_lm_forward --forward
+    deps:
+      - src/ner/flair/train_language_model.py
+      - data/corpus/jobs
+    params:
+      - flair.language_model_train.num_epochs
+    outs:
+      - models/jobs_lm_forward    
+  finetune_backward_lm:
+    cmd: pipenv run python src/ner/flair/train_language_model.py --out=models/jobs_lm_backward --backward
+    deps:
+      - src/ner/flair/train_language_model.py
+      - data/corpus/jobs
+    params:
+      - flair.language_model_train.num_epochs
+    outs:
+      - models/jobs_lm_backward
