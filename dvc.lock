@@ -21,13 +21,16 @@ stages:
     cmd: pipenv run python ./src/ner/flair/prepare_lm_train_files.py ./data/jobs/seek_vacancies.db
     deps:
     - path: ./src/ner/flair/prepare_lm_train_files.py
-      md5: b3da054f5a2c28308778576a0501d8bb
-      size: 1638
+      md5: dd9ad5609c5b7c16cb654ca38cadda64
+      size: 1876
     - path: data/jobs/seek_vacancies.db
       md5: d01f95fd560d5092854627cacb9a7053
       size: 541581312
+    params:
+      params.yaml:
+        flair.language_model_train.corpus_dir: data/corpus/jobs
     outs:
-    - path: data/corpus/train
+    - path: data/corpus/jobs
       md5: 14cd263f9b3a59dfff45f5cf07eb17d9.dir
       size: 373151466
       nfiles: 100
