@@ -5,6 +5,7 @@ import argparse
 import sqlite3
 import math
 import os
+import yaml
 
 
 def get_num_of_vacacnies(c):
@@ -24,7 +25,7 @@ def read_vacancy_db_chunk(c, offset, limit, file_path):
         f.write(cleared_text)
     f.close()        
 
-def prepare_language_model_train_set(database_file_path):
+def prepare_language_model_train_set(database_file_path, output_path):
     conn = sqlite3.connect(database_file_path)
     c = conn.cursor()
     
@@ -34,7 +35,7 @@ def prepare_language_model_train_set(database_file_path):
     print(chunk_size)
     for chk_id in range(0,100):
         offset = chk_id * chunk_size
-        file_path = 'data/corpus/train/train_split_' + str(chk_id)
+        file_path = os.path.join(output_path, 'train_split_' + str(chk_id))
         read_vacancy_db_chunk(c, offset, chunk_size, file_path)
 
 
@@ -53,11 +54,15 @@ def init_argparse() -> argparse.ArgumentParser:
 
 if __name__ == "__main__":
     parser = init_argparse()
-
     
     args=parser.parse_args()
 
-    os.makedirs('./data/corpus/train')
+    params = yaml.safe_load(open('params.yaml'))['flair']['language_model_train']
+
+    train_set_path = params['corpus_dir']
+    is_exist = os.path.exists(args.out)
+    if not is_exist:
+        os.makedirs(train_set_path)
 
     database_file = args.input
     prepare_language_model_train_set(database_file)

@@ -1,0 +1,4 @@
+flair:
+  language_model_train:
+    num_epochs: 8
+    corpus_dir: data/corpus/jobs
