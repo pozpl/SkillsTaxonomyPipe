@@ -1,0 +1,5 @@
+outs:
+- md5: d01f95fd560d5092854627cacb9a7053
+  size: 541581312
+  path: seek_vacancies.db
+  isexec: true

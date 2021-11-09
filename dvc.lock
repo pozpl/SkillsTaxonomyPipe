@@ -17,3 +17,17 @@ stages:
     - path: data/annotation/annotation-result-BIO.txt
       md5: 7f18755701f4ec76d05641cba2a305be
       size: 1376730
+  prepare_language_model_train_set:
+    cmd: pipenv run python ./src/ner/flair/prepare_lm_train_files.py ./data/jobs/seek_vacancies.db
+    deps:
+    - path: ./src/ner/flair/prepare_lm_train_files.py
+      md5: b3da054f5a2c28308778576a0501d8bb
+      size: 1638
+    - path: data/jobs/seek_vacancies.db
+      md5: d01f95fd560d5092854627cacb9a7053
+      size: 541581312
+    outs:
+    - path: data/corpus/train
+      md5: 14cd263f9b3a59dfff45f5cf07eb17d9.dir
+      size: 373151466
+      nfiles: 100

@@ -8,3 +8,10 @@ stages:
     - data/annotation/annotation-result.txt
     outs:
     - data/annotation/annotation-result-BIO.txt
+  prepare_language_model_train_set:
+    cmd: pipenv run python ./src/ner/flair/prepare_lm_train_files.py ./data/jobs/seek_vacancies.db
+    deps:
+    - ./src/ner/flair/prepare_lm_train_files.py
+    - data/jobs/seek_vacancies.db
+    outs:
+    - data/corpus/train
