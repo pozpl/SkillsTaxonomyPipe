@@ -60,9 +60,9 @@ if __name__ == "__main__":
     params = yaml.safe_load(open('params.yaml'))['flair']['language_model_train']
 
     train_set_path = params['corpus_dir']
-    is_exist = os.path.exists(args.out)
+    is_exist = os.path.exists(train_set_path)
     if not is_exist:
         os.makedirs(train_set_path)
 
     database_file = args.input
-    prepare_language_model_train_set(database_file)
+    prepare_language_model_train_set(database_file, train_set_path)
