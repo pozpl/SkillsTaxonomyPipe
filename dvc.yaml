@@ -16,7 +16,7 @@ stages:
     params:
       - flair.language_model_train.corpus_dir
     outs:
-      - data/corpus/jobs
+      - data/corpus/jobs/train
   finetune_forward_lm:
     cmd: pipenv run python src/ner/flair/train_language_model.py --out=models/jobs_lm_forward --forward
     deps:
