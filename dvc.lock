@@ -34,3 +34,30 @@ stages:
       md5: 14cd263f9b3a59dfff45f5cf07eb17d9.dir
       size: 373151466
       nfiles: 100
+  finetune_backward_lm:
+    cmd: pipenv run python src/ner/flair/train_language_model.py --out=models/jobs_lm_backward
+      --backward
+    deps:
+    - path: data/corpus/jobs/test.txt
+      md5: e6d040005443dc7b485df62ba359f01b
+      size: 3791917
+    - path: data/corpus/jobs/train
+      md5: 14cd263f9b3a59dfff45f5cf07eb17d9.dir
+      size: 373151466
+      nfiles: 100
+    - path: data/corpus/jobs/valid.txt
+      md5: 3038a3bec712939157ca4c6186b46df5
+      size: 3872807
+    - path: src/ner/flair/train_language_model.py
+      md5: fae51be9ae8712144ae6ce4afcc333fe
+      size: 2856
+    params:
+      params.yaml:
+        flair.language_model_train.num_epochs: 1
+    outs:
+    - path: models/jobs_lm_backward/best-lm.pt
+      md5: e75f9445cc3d863ef16eb1e8622b86fa
+      size: 73037151
+    - path: models/jobs_lm_backward/checkpoint.pt
+      md5: ab0d64e1da7ee9a4366387edab357880
+      size: 73037471
