@@ -1,0 +1,4 @@
+outs:
+- md5: 3038a3bec712939157ca4c6186b46df5
+  size: 3872807
+  path: valid.txt

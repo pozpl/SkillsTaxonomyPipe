@@ -30,7 +30,7 @@ stages:
       params.yaml:
         flair.language_model_train.corpus_dir: data/corpus/jobs
     outs:
-    - path: data/corpus/jobs
-      md5: ca90b1a92135dedd95d89ad6c53f8893.dir
+    - path: data/corpus/jobs/train
+      md5: 14cd263f9b3a59dfff45f5cf07eb17d9.dir
       size: 373151466
       nfiles: 100
