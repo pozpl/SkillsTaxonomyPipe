@@ -3,7 +3,7 @@ flair:
     num_epochs: 2
     corpus_dir: data/corpus/jobs
   ner_train:
-    num_epochs: 10
+    num_epochs: 40
     crf: True
-    rnn: True
+    rnn: False
 

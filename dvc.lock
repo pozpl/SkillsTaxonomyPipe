@@ -98,10 +98,10 @@ stages:
     params:
       params.yaml:
         flair.ner_train.crf: true
-        flair.ner_train.num_epochs: 1
+        flair.ner_train.num_epochs: 40
         flair.ner_train.rnn: false
     outs:
     - path: models/flair-ner-bert
-      md5: d7203206c0ddb6b83a2e4db8fa8d0d04.dir
-      size: 998210338
+      md5: 8be5e0b7b820c68cf630bd1dec9e7d86.dir
+      size: 998271086
       nfiles: 7
