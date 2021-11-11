@@ -8,6 +8,7 @@ from flair.trainers import ModelTrainer
 
 import torch
 from torch.optim.lr_scheduler import OneCycleLR
+import yaml
 
 
 def train_ner():
@@ -59,7 +60,7 @@ def train_ner():
                 mini_batch_size=64,
                 max_epochs=150)
 
-def train_ner_bert():
+def train_ner_bert(epochs: int, use_crf: bool, use_rnn: bool):
     # define columns
     columns = {0 : 'text', 1 : 'ner'}# directory where the data resides
     data_folder = 'data/annotation'# initializing the corpus
@@ -94,8 +95,8 @@ def train_ner_bert():
         embeddings=embeddings,
         tag_dictionary=label_dict,
         tag_type='ner',
-        use_crf=False,
-        use_rnn=False,
+        use_crf=use_crf,
+        use_rnn=use_rnn,
         reproject_embeddings=False,
     )
 
@@ -107,7 +108,7 @@ def train_ner_bert():
                 learning_rate=5.0e-6,
                 mini_batch_size=4,
                 mini_batch_chunk_size=1,  # remove this parameter to speed up computation if you have a big GPU
-                max_epochs=20,  # 10 is also good
+                max_epochs=epochs,  # 10 is also good
                 scheduler=OneCycleLR,
                 embeddings_storage_mode='none',
                 weight_decay=0.,
@@ -115,5 +116,9 @@ def train_ner_bert():
                     
 
 if __name__ == "__main__":
-    train_ner_bert()
+    params = yaml.safe_load(open('params.yaml'))['flair']['ner_train']
+
+    train_ner_bert(epochs=params['num_epochs'], 
+                   use_crf=params['crf'],
+                   use_rnn=params['rnn']);
 

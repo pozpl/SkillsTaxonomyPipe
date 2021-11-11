@@ -31,8 +31,12 @@ stages:
       - src/ner/flair/train_ner.py
       - data/annotation/annotation-result-BIO.txt
       - data/annotation/annotation-result-BIO-val.txt
-      - models/jobs_lm_backward/best-lm.pt
-      - models/jobs_lm_forward/best-lm.pt
+      - models/jobs_lm_backward
+      - models/jobs_lm_forward
+    params:
+      - flair.ner_train.num_epochs
+      - flair.ner_train.crf
+      - flair.ner_train.rnn
     outs:
       - models/flair-ner-bert
       

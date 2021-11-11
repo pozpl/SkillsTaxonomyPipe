@@ -75,3 +75,33 @@ stages:
     - path: data/annotation/annotation-result-BIO-val.txt
       md5: 8b2b7ece5ca1ac9d1dbbc5b1b244a526
       size: 129848
+  flair_train_ner:
+    cmd: pipenv run python ./src/ner/flair/train_ner.py
+    deps:
+    - path: data/annotation/annotation-result-BIO-val.txt
+      md5: 8b2b7ece5ca1ac9d1dbbc5b1b244a526
+      size: 129848
+    - path: data/annotation/annotation-result-BIO.txt
+      md5: 7f18755701f4ec76d05641cba2a305be
+      size: 1376730
+    - path: models/jobs_lm_backward
+      md5: 93093c1ffdae43cb9ca26775c53f0519.dir
+      size: 365943795
+      nfiles: 7
+    - path: models/jobs_lm_forward
+      md5: f27de30296858914b7817ea2035bab74.dir
+      size: 292741013
+      nfiles: 6
+    - path: src/ner/flair/train_ner.py
+      md5: 377e78af77c05d77c31da8c8f25286b2
+      size: 4536
+    params:
+      params.yaml:
+        flair.ner_train.crf: true
+        flair.ner_train.num_epochs: 1
+        flair.ner_train.rnn: false
+    outs:
+    - path: models/flair-ner-bert
+      md5: d7203206c0ddb6b83a2e4db8fa8d0d04.dir
+      size: 998210338
+      nfiles: 7
