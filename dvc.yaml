@@ -39,6 +39,22 @@ stages:
       - flair.ner_train.rnn
     outs:
       - models/flair-ner-bert
+  prepare_train_ner_dataset_spacy:
+    cmd: ipenv run python src/ner/spacy/prepare_traning_data.py data/annotation/annotation-result-orig.json data/annotation/annotation-result.json --out data/annotation/train.spacy
+    deps:
+      - src/ner/spacy/prepare_traning_data.py
+      - data/annotation/annotation-result-orig.json
+      - data/annotation/annotation-result.json
+    outs:
+      - data/annotation/train.spacy
+  
+  prepare_validation_ner_dataset_spacy:
+    cmd: ipenv run python src/ner/spacy/prepare_traning_data.py data/annotation/annotation-result-val.json --out data/annotation/validation.spacy
+    deps:
+      - src/ner/spacy/prepare_traning_data.py
+      - data/annotation/annotation-result-val.json
+    outs:
+      - data/annotation/validation.spacy
       
   # finetune_forward_lm:
   #   cmd: pipenv run python src/ner/flair/train_language_model.py --out=models/jobs_lm_forward --forward
