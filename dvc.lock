@@ -105,3 +105,34 @@ stages:
       md5: 8be5e0b7b820c68cf630bd1dec9e7d86.dir
       size: 998271086
       nfiles: 7
+  prepare_train_ner_dataset_spacy:
+    cmd: pipenv run python src/ner/spacy/prepare_traning_data.py data/annotation/annotation-result-orig.json
+      data/annotation/annotation-result.json --out data/annotation/train.spacy
+    deps:
+    - path: data/annotation/annotation-result-orig.json
+      md5: a20e83324f674ccf3fa87ea0b4ab65d3
+      size: 436553
+    - path: data/annotation/annotation-result.json
+      md5: 9b058f4139b741fe9b72889d9a674d15
+      size: 717283
+    - path: src/ner/spacy/prepare_traning_data.py
+      md5: 936490ef9636be52e825ad8739a47b3d
+      size: 1936
+    outs:
+    - path: data/annotation/train.spacy
+      md5: 1f23fba92bfd5521dba5a076a4c44340
+      size: 1315374
+  prepare_validation_ner_dataset_spacy:
+    cmd: pipenv run python src/ner/spacy/prepare_traning_data.py data/annotation/annotation-result-val.json
+      --out data/annotation/validation.spacy
+    deps:
+    - path: data/annotation/annotation-result-val.json
+      md5: 5ef17176ff1b61bfcd09c27fad900479
+      size: 115924
+    - path: src/ner/spacy/prepare_traning_data.py
+      md5: 936490ef9636be52e825ad8739a47b3d
+      size: 1936
+    outs:
+    - path: data/annotation/validation.spacy
+      md5: e239f5a311e903e56e6b7223454d65ed
+      size: 132700

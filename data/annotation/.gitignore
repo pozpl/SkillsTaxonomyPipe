@@ -6,3 +6,5 @@
 /annotation-result-val.txt
 /annotation-result-val.json
 /annotation-result.json
+/train.spacy
+/validation.spacy
