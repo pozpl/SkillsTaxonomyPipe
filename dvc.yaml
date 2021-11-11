@@ -25,6 +25,17 @@ stages:
       - flair.language_model_train.corpus_dir
     outs:
       - data/corpus/jobs/train
+  flair_train_ner:
+    cmd: pipenv run python ./src/ner/flair/train_ner.py
+    deps:
+      - src/ner/flair/train_ner.py
+      - data/annotation/annotation-result-BIO.txt
+      - data/annotation/annotation-result-BIO-val.txt
+      - models/jobs_lm_backward/best-lm.pt
+      - models/jobs_lm_forward/best-lm.pt
+    outs:
+      - models/flair-skills-ner
+      
   # finetune_forward_lm:
   #   cmd: pipenv run python src/ner/flair/train_language_model.py --out=models/jobs_lm_forward --forward
   #   deps:
