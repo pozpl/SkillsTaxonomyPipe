@@ -55,6 +55,18 @@ stages:
       - data/annotation/annotation-result-val.json
     outs:
       - data/annotation/validation.spacy
+
+  # spacy_install_eng_model:
+  #   cmd: pipenv run python -m spacy download en_core_web_trf
+
+  # spacy_train_ner:
+  #   cmd: pipenv run python -m spacy train config/config_gpu.cfg --output ./models/spacy-ner --paths.train ./data/annotation/train.spacy --paths.dev ./data/annotation/validation.spacy --gpu-id 0
+  #   deps:
+  #     - data/annotation/train.spacy
+  #     - data/annotation/validation.spacy
+  #   outs: 
+  #     - models/spacy-ner
+    
       
   # finetune_forward_lm:
   #   cmd: pipenv run python src/ner/flair/train_language_model.py --out=models/jobs_lm_forward --forward

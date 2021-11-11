@@ -8,7 +8,7 @@ flair = "*"
 pyyaml = "*"
 fastapi = "*"
 uvicorn = "*"
-spacy = "*"
+spacy = {extras = ["cuda113"], version = "*"}
 
 [dev-packages]
 
