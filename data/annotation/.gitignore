@@ -2,3 +2,5 @@
 /annotation-result-orig.txt
 /annotation-result.txt
 /annotation-result-BIO.txt
+/annotation-result-BIO-val.txt
+/annotation-result-val.txt

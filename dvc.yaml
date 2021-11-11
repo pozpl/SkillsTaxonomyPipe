@@ -8,6 +8,14 @@ stages:
       - data/annotation/annotation-result.txt
     outs:
       - data/annotation/annotation-result-BIO.txt
+  prepare_annotations_val:
+    cmd: pipenv run python ./src/ner/convert_bliou_to_bio.py ./data/annotation/annotation-result-val.txt
+       --out data/annotation/annotation-result-BIO-val.txt
+    deps:
+      - ./src/ner/convert_bliou_to_bio.py
+      - data/annotation/annotation-result-val.txt
+    outs:
+      - data/annotation/annotation-result-BIO-val.txt    
   prepare_language_model_train_set:
     cmd: pipenv run python ./src/ner/flair/prepare_lm_train_files.py ./data/jobs/seek_vacancies.db
     deps:
@@ -43,4 +51,3 @@ stages:
   #     - models/jobs_lm_backward/best-lm.pt   
   #     - models/jobs_lm_backward/checkpoint.pt:
   #         checkpoint: true 
-  

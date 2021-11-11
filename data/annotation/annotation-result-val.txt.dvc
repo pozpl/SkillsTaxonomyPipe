@@ -1,0 +1,4 @@
+outs:
+- md5: 6c4b909e153e8d976d73983de79fe728
+  size: 161741
+  path: annotation-result-val.txt
