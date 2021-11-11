@@ -34,7 +34,7 @@ stages:
       - models/jobs_lm_backward/best-lm.pt
       - models/jobs_lm_forward/best-lm.pt
     outs:
-      - models/flair-skills-ner
+      - models/flair-ner-bert
       
   # finetune_forward_lm:
   #   cmd: pipenv run python src/ner/flair/train_language_model.py --out=models/jobs_lm_forward --forward

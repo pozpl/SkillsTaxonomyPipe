@@ -1,10 +1,13 @@
 from flair.data import Corpus
 from flair.datasets import ColumnCorpus
-from flair.embeddings import TokenEmbeddings, WordEmbeddings, StackedEmbeddings,FlairEmbeddings
+from flair.embeddings import TokenEmbeddings, WordEmbeddings, StackedEmbeddings,FlairEmbeddings, TransformerWordEmbeddings
 from typing import List
 
 from flair.models import SequenceTagger
 from flair.trainers import ModelTrainer
+
+import torch
+from torch.optim.lr_scheduler import OneCycleLR
 
 
 def train_ner():
@@ -56,6 +59,61 @@ def train_ner():
                 mini_batch_size=64,
                 max_epochs=150)
 
+def train_ner_bert():
+    # define columns
+    columns = {0 : 'text', 1 : 'ner'}# directory where the data resides
+    data_folder = 'data/annotation'# initializing the corpus
+    corpus: Corpus = ColumnCorpus(data_folder, columns,
+                                train_file = 'annotation-result-BIO.txt',
+                                test_file = 'annotation-result-BIO-val.txt',
+                                dev_file = 'annotation-result-BIO-val.txt')
+
+    print(len(corpus.train))
+    print(corpus.train[0].to_tagged_string())
+
+    # 2. what label do we want to predict?
+    label_type = 'ner'
+
+    # 3. make the label dictionary from the corpus
+    label_dict = corpus.make_label_dictionary(label_type=label_type)
+    label_dict.add_unk = True
+    print(label_dict)
+
+    # 4. initialize fine-tuneable transformer embeddings WITH document context
+    embeddings = TransformerWordEmbeddings(
+        model='roberta-base',
+        layers="-1",
+        subtoken_pooling="first",
+        fine_tune=True,
+        use_context=True,
+    )
+
+    # 5. initialize bare-bones sequence tagger (no CRF, no RNN, no reprojection)
+    tagger = SequenceTagger(
+        hidden_size=256,
+        embeddings=embeddings,
+        tag_dictionary=label_dict,
+        tag_type='ner',
+        use_crf=False,
+        use_rnn=False,
+        reproject_embeddings=False,
+    )
+
+    # 6. initialize trainer with AdamW optimizer
+    trainer = ModelTrainer(tagger, corpus, optimizer=torch.optim.AdamW)
+
+    # 7. run training with XLM parameters (20 epochs, small LR, one-cycle learning rate scheduling)
+    trainer.train('models/flair-ner-bert',
+                learning_rate=5.0e-6,
+                mini_batch_size=4,
+                mini_batch_chunk_size=1,  # remove this parameter to speed up computation if you have a big GPU
+                max_epochs=20,  # 10 is also good
+                scheduler=OneCycleLR,
+                embeddings_storage_mode='none',
+                weight_decay=0.,
+                )
+                    
+
 if __name__ == "__main__":
-    train_ner()
+    train_ner_bert()
 
