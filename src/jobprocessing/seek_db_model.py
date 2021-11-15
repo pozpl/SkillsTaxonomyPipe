@@ -109,7 +109,7 @@ class VacancyCityAssociationTable(DeclarativeBase):
     city_id = Column(Integer, ForeignKey('city.id'), primary_key=True)
 
 class VacacnySkillAssociationTable(DeclarativeBase):
-    __tablename__='vacacny_skill'
+    __tablename__='vacancy_skill'
     vacancy_id=Column(Integer, ForeignKey('vacancy.id'), primary_key=True)
     skill_id=Column(Integer, ForeignKey('skill.id'), primary_key=True)
                               

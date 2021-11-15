@@ -17,11 +17,11 @@ if __name__ == "__main__":
 
     engine = db_connect()
     create_table(engine)
-    session = sessionmaker(bind=engine)
+    session_maker = sessionmaker(bind=engine)
    
     flair_extr_serv = create_flair_extraction_service(config)
-    skills_aug_pipeline = create_skills_extr_pipeline(session, flair_extr_serv)
+    skills_aug_pipeline = create_skills_extr_pipeline(session_maker, flair_extr_serv)
     skills_aug_pipeline.process_vacancies()
-    session.commit()
-    session.close()
+    
+    session_maker.close()
     engine.dispose()

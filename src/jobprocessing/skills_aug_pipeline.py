@@ -4,9 +4,9 @@ from tqdm import tqdm
 
 class SkillsAugmentationPipeline(object):
 
-    def __init__(self, session, flair_skills_extraction_service: FlairSkillsExtractionService):
+    def __init__(self, session_maker, flair_skills_extraction_service: FlairSkillsExtractionService):
 
-        self.Session = session
+        self.session_maker = session_maker
         self.flair_skills_extraction_service = flair_skills_extraction_service
 
         self.skills_cache = {}
@@ -16,7 +16,7 @@ class SkillsAugmentationPipeline(object):
 
         This method is called for every item pipeline component.
         """
-        session = self.Session()
+        session = self.session_maker()
 
         # get all unprocessed vacacnies
         unprocessed_count = self.count_unprocessed_vacacnies(session)
@@ -89,6 +89,6 @@ class SkillsAugmentationPipeline(object):
         return skill
     
 
-def create_skills_extr_pipeline(session, flair_extr_service: FlairSkillsExtractionService):
-    return SkillsAugmentationPipeline(session, flair_extr_service)
+def create_skills_extr_pipeline(session_maker, flair_extr_service: FlairSkillsExtractionService):
+    return SkillsAugmentationPipeline(session_maker, flair_extr_service)
     
