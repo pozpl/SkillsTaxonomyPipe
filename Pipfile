@@ -9,6 +9,7 @@ pyyaml = "*"
 fastapi = "*"
 uvicorn = "*"
 spacy = {extras = ["cuda113"], version = "*"}
+sqlalchemy = "*"
 
 [dev-packages]
 

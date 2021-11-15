@@ -1,6 +1,6 @@
-from sqlalchemy.orm import sessionmaker
 from seek_db_model import Skill, Vacancy, create_table, db_connect
 from flair_skills_extraction_service import FlairSkillsExtractionService
+from tqdm import tqdm
 
 class SkillsAugmentationPipeline(object):
 
@@ -19,39 +19,51 @@ class SkillsAugmentationPipeline(object):
         session = self.Session()
 
         # get all unprocessed vacacnies
-        unprocessed_vacacnies = self.get_unprocessed_vacacnies(session)
+        unprocessed_count = self.count_unprocessed_vacacnies(session)
+        print("Unprocessed text: " + str(unprocessed_count))
+        batch_size = 1000
+        for i in tqdm(range(0,unprocessed_count, batch_size)):
+            unprocessed_vacacnies = self.get_unprocessed_vacacnies(session, batch_size)
         
-        for vacancy in unprocessed_vacacnies:
-            print(vacancy.title)
+            for vacancy in tqdm(unprocessed_vacacnies):
+                # print(vacancy.title)
 
-            skill_names = set()
+                skill_names = set()
 
-            
-            flair_extracted_skills = self.flair_skills_extraction_service.predict(vacancy.title + ' ' + vacancy.description)
-            print("=======Flair============")                
-            for skill in flair_extracted_skills: 
-                print ('Flair srkill: ' + skill.text)
-                skill_names.add(skill.text)
-            try:
-                for skill_name in skill_names: 
-                    skill = self.get_or_create_skill(session, skill_name)
-                    vacancy.skills.append(skill)
-            except:
-                session.rollback()
-                raise
-        session.commit()
+                
+                flair_extracted_skills = self.flair_skills_extraction_service.predict(vacancy.title + ' ' + vacancy.description)
+                # print("=======Flair============")                
+                for skill in flair_extracted_skills: 
+                    # print ('Flair srkill: ' + skill.text)
+                    skill_names.add(skill.text)
+                try:
+                    for skill_name in skill_names: 
+                        skill = self.get_or_create_skill(session, skill_name)
+                        vacancy.skills.append(skill)
+                except:
+                    session.rollback()
+                    raise
+            session.commit()
         
 
 
 
 
     @staticmethod
-    def get_unprocessed_vacacnies(session):
-        vac_q = session.query(Vacancy).outerjoin(Skill, Vacancy.skills).filter(Skill.id == None)
-        print(vac_q)
+    def get_unprocessed_vacacnies(session, limit):
+        vac_q = session.query(Vacancy).outerjoin(Skill, Vacancy.skills).filter(Skill.id == None).order_by(Vacancy.id).limit(limit)
+        #print(vac_q)
         vacancies = vac_q.all()
     
         return vacancies
+
+    @staticmethod
+    def count_unprocessed_vacacnies(session):
+        vac_q = session.query(Vacancy).outerjoin(Skill, Vacancy.skills).filter(Skill.id == None)
+        #print(vac_q)
+        vacancies = vac_q.count()
+    
+        return vacancies    
 
     def get_or_create_skill(self, session, skill_name: str) -> Skill:
         if skill_name in self.skills_cache:

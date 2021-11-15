@@ -1,8 +1,6 @@
-import yaml
-from jobprocessing.utils import common_parameters
-
 from skills_aug_pipeline import create_skills_extr_pipeline
 from flair_skills_extraction_service import FlairSkillsExtractionService, get_flair_skills_extraction_service
+from utils import common_parameters
 
 from typing import Dict, List, Optional
 from sqlalchemy.orm import sessionmaker
