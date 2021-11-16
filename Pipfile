@@ -10,6 +10,7 @@ fastapi = "*"
 uvicorn = "*"
 spacy = {extras = ["cuda113"], version = "*"}
 sqlalchemy = "*"
+gensim = "*"
 
 [dev-packages]
 
