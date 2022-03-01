@@ -10,7 +10,11 @@ fastapi = "*"
 uvicorn = "*"
 spacy = {extras = ["cuda113"], version = "*"}
 sqlalchemy = "*"
-gensim = "*"
+jupyterlab = "*"
+pandas = "*"
+dfply = "*"
+torch-tb-profiler = "*"
+tensorboard = "*"
 
 [dev-packages]
 
