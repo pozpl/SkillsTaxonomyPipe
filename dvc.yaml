@@ -1,6 +1,6 @@
 stages:
   prepare_annotations:
-    cmd: pipenv run python ./src/ner/convert_bliou_to_bio.py ./data/annotation/annotation-result-orig.txt
+    cmd: poetry run python ./src/ner/convert_bliou_to_bio.py ./data/annotation/annotation-result-orig.txt
       ./data/annotation/annotation-result.txt --out data/annotation/annotation-result-BIO.txt
     deps:
       - ./src/ner/convert_bliou_to_bio.py
@@ -9,7 +9,7 @@ stages:
     outs:
       - data/annotation/annotation-result-BIO.txt
   prepare_annotations_val:
-    cmd: pipenv run python ./src/ner/convert_bliou_to_bio.py ./data/annotation/annotation-result-val.txt
+    cmd: poetry run python ./src/ner/convert_bliou_to_bio.py ./data/annotation/annotation-result-val.txt
        --out data/annotation/annotation-result-BIO-val.txt
     deps:
       - ./src/ner/convert_bliou_to_bio.py
@@ -17,7 +17,7 @@ stages:
     outs:
       - data/annotation/annotation-result-BIO-val.txt    
   prepare_language_model_train_set:
-    cmd: pipenv run python ./src/ner/flair/prepare_lm_train_files.py ./data/jobs/seek_vacancies.db
+    cmd: poetry run python ./src/ner/flair/prepare_lm_train_files.py ./data/jobs/seek_vacancies.db
     deps:
       - ./src/ner/flair/prepare_lm_train_files.py
       - data/jobs/seek_vacancies.db
@@ -26,7 +26,7 @@ stages:
     outs:
       - data/corpus/jobs/train
   flair_train_ner:
-    cmd: pipenv run python ./src/ner/flair/train_ner.py
+    cmd: poetry run python ./src/ner/flair/train_ner.py
     deps:
       - src/ner/flair/train_ner.py
       - data/annotation/annotation-result-BIO.txt
@@ -40,7 +40,7 @@ stages:
     outs:
       - models/flair-ner-bert
   prepare_train_ner_dataset_spacy:
-    cmd: pipenv run python src/ner/spacy/prepare_traning_data.py data/annotation/annotation-result-orig.json data/annotation/annotation-result.json --out data/annotation/train.spacy
+    cmd: poetry run python src/ner/spacy/prepare_traning_data.py data/annotation/annotation-result-orig.json data/annotation/annotation-result.json --out data/annotation/train.spacy
     deps:
       - src/ner/spacy/prepare_traning_data.py
       - data/annotation/annotation-result-orig.json
@@ -49,27 +49,28 @@ stages:
       - data/annotation/train.spacy
   
   prepare_validation_ner_dataset_spacy:
-    cmd: pipenv run python src/ner/spacy/prepare_traning_data.py data/annotation/annotation-result-val.json --out data/annotation/validation.spacy
+    cmd: poetry run python src/ner/spacy/prepare_traning_data.py data/annotation/annotation-result-val.json --out data/annotation/validation.spacy
     deps:
       - src/ner/spacy/prepare_traning_data.py
       - data/annotation/annotation-result-val.json
     outs:
       - data/annotation/validation.spacy
 
-  # spacy_install_eng_model:
-  #   cmd: pipenv run python -m spacy download en_core_web_trf
+  spacy_install_eng_model:
+    cmd: poetry run python -m spacy download en_core_web_trf
 
-  # spacy_train_ner:
-  #   cmd: pipenv run python -m spacy train config/config_gpu.cfg --output ./models/spacy-ner --paths.train ./data/annotation/train.spacy --paths.dev ./data/annotation/validation.spacy --gpu-id 0
-  #   deps:
-  #     - data/annotation/train.spacy
-  #     - data/annotation/validation.spacy
-  #   outs: 
-  #     - models/spacy-ner
+  spacy_train_ner:
+    cmd: poetry run python -m spacy train config/config_gpu.cfg --output ./models/spacy-ner --paths.train ./data/annotation/train.spacy --paths.dev ./data/annotation/validation.spacy --gpu-id 0
+    deps:
+      - config/config_gpu.cfg
+      - data/annotation/train.spacy
+      - data/annotation/validation.spacy
+    outs: 
+      - models/spacy-ner
     
       
   # finetune_forward_lm:
-  #   cmd: pipenv run python src/ner/flair/train_language_model.py --out=models/jobs_lm_forward --forward
+  #   cmd: poetry run python src/ner/flair/train_language_model.py --out=models/jobs_lm_forward --forward
   #   deps:
   #     - src/ner/flair/train_language_model.py
   #     - data/corpus/jobs/train
@@ -82,7 +83,7 @@ stages:
   #     - models/jobs_lm_forward/checkpoint.pt:
   #         checkpoint: true   
   # finetune_backward_lm:
-  #   cmd: pipenv run python src/ner/flair/train_language_model.py --out=models/jobs_lm_backward --backward
+  #   cmd: poetry run python src/ner/flair/train_language_model.py --out=models/jobs_lm_backward --backward
   #   deps:
   #     - src/ner/flair/train_language_model.py
   #     - data/corpus/jobs/train

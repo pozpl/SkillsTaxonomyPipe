@@ -1,7 +1,7 @@
 schema: '2.0'
 stages:
   prepare_annotations:
-    cmd: pipenv run python ./src/ner/convert_bliou_to_bio.py ./data/annotation/annotation-result-orig.txt
+    cmd: poetry run python ./src/ner/convert_bliou_to_bio.py ./data/annotation/annotation-result-orig.txt
       ./data/annotation/annotation-result.txt --out data/annotation/annotation-result-BIO.txt
     deps:
     - path: ./src/ner/convert_bliou_to_bio.py
@@ -18,14 +18,14 @@ stages:
       md5: 7f18755701f4ec76d05641cba2a305be
       size: 1376730
   prepare_language_model_train_set:
-    cmd: pipenv run python ./src/ner/flair/prepare_lm_train_files.py ./data/jobs/seek_vacancies.db
+    cmd: poetry run python ./src/ner/flair/prepare_lm_train_files.py ./data/jobs/seek_vacancies.db
     deps:
     - path: ./src/ner/flair/prepare_lm_train_files.py
       md5: 56d1e1751fd8524bf570602a76ab6ff7
       size: 1899
     - path: data/jobs/seek_vacancies.db
-      md5: d01f95fd560d5092854627cacb9a7053
-      size: 541581312
+      md5: 2c1a32f46b6a7b28cfe1c572b4930f01
+      size: 550674432
     params:
       params.yaml:
         flair.language_model_train.corpus_dir: data/corpus/jobs
@@ -62,7 +62,7 @@ stages:
       md5: ab0d64e1da7ee9a4366387edab357880
       size: 73037471
   prepare_annotations_val:
-    cmd: pipenv run python ./src/ner/convert_bliou_to_bio.py ./data/annotation/annotation-result-val.txt
+    cmd: poetry run python ./src/ner/convert_bliou_to_bio.py ./data/annotation/annotation-result-val.txt
       --out data/annotation/annotation-result-BIO-val.txt
     deps:
     - path: ./src/ner/convert_bliou_to_bio.py
@@ -106,7 +106,7 @@ stages:
       size: 998271086
       nfiles: 7
   prepare_train_ner_dataset_spacy:
-    cmd: pipenv run python src/ner/spacy/prepare_traning_data.py data/annotation/annotation-result-orig.json
+    cmd: poetry run python src/ner/spacy/prepare_traning_data.py data/annotation/annotation-result-orig.json
       data/annotation/annotation-result.json --out data/annotation/train.spacy
     deps:
     - path: data/annotation/annotation-result-orig.json
@@ -120,10 +120,10 @@ stages:
       size: 1936
     outs:
     - path: data/annotation/train.spacy
-      md5: 1f23fba92bfd5521dba5a076a4c44340
-      size: 1315374
+      md5: d3e36493b1583aecc9c2c68d8116635f
+      size: 1315373
   prepare_validation_ner_dataset_spacy:
-    cmd: pipenv run python src/ner/spacy/prepare_traning_data.py data/annotation/annotation-result-val.json
+    cmd: poetry run python src/ner/spacy/prepare_traning_data.py data/annotation/annotation-result-val.json
       --out data/annotation/validation.spacy
     deps:
     - path: data/annotation/annotation-result-val.json
@@ -136,3 +136,5 @@ stages:
     - path: data/annotation/validation.spacy
       md5: e239f5a311e903e56e6b7223454d65ed
       size: 132700
+  spacy_install_eng_model:
+    cmd: poetry run python -m spacy download en_core_web_trf
