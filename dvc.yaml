@@ -56,17 +56,17 @@ stages:
     outs:
       - data/annotation/validation.spacy
 
-  spacy_install_eng_model:
-    cmd: poetry run python -m spacy download en_core_web_trf
+  # spacy_install_eng_model:
+  #   cmd: poetry run python -m spacy download en_core_web_trf
 
-  spacy_train_ner:
-    cmd: poetry run python -m spacy train config/config_gpu.cfg --output ./models/spacy-ner --paths.train ./data/annotation/train.spacy --paths.dev ./data/annotation/validation.spacy --gpu-id 0
-    deps:
-      - config/config_gpu.cfg
-      - data/annotation/train.spacy
-      - data/annotation/validation.spacy
-    outs: 
-      - models/spacy-ner
+  # spacy_train_ner:
+  #   cmd: poetry run python -m spacy train config/config_gpu.cfg --output ./models/spacy-ner --paths.train ./data/annotation/train.spacy --paths.dev ./data/annotation/validation.spacy --gpu-id 0
+  #   deps:
+  #     - config/config_gpu.cfg
+  #     - data/annotation/train.spacy
+  #     - data/annotation/validation.spacy
+  #   outs: 
+  #     - models/spacy-ner
     
       
   # finetune_forward_lm:
