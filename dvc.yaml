@@ -31,30 +31,29 @@ stages:
       - src/ner/flair/train_ner.py
       - data/annotation/annotation-result-BIO.txt
       - data/annotation/annotation-result-BIO-val.txt
-      - models/jobs_lm_backward
-      - models/jobs_lm_forward
     params:
       - flair.ner_train.num_epochs
       - flair.ner_train.crf
       - flair.ner_train.rnn
     outs:
       - models/flair-ner-bert
-  prepare_train_ner_dataset_spacy:
-    cmd: poetry run python src/ner/spacy/prepare_traning_data.py data/annotation/annotation-result-orig.json data/annotation/annotation-result.json --out data/annotation/train.spacy
-    deps:
-      - src/ner/spacy/prepare_traning_data.py
-      - data/annotation/annotation-result-orig.json
-      - data/annotation/annotation-result.json
-    outs:
-      - data/annotation/train.spacy
   
-  prepare_validation_ner_dataset_spacy:
-    cmd: poetry run python src/ner/spacy/prepare_traning_data.py data/annotation/annotation-result-val.json --out data/annotation/validation.spacy
-    deps:
-      - src/ner/spacy/prepare_traning_data.py
-      - data/annotation/annotation-result-val.json
-    outs:
-      - data/annotation/validation.spacy
+  # prepare_train_ner_dataset_spacy:
+  #   cmd: poetry run python src/ner/spacy/prepare_traning_data.py data/annotation/annotation-result-orig.json data/annotation/annotation-result.json --out data/annotation/train.spacy
+  #   deps:
+  #     - src/ner/spacy/prepare_traning_data.py
+  #     - data/annotation/annotation-result-orig.json
+  #     - data/annotation/annotation-result.json
+  #   outs:
+  #     - data/annotation/train.spacy
+  
+  # prepare_validation_ner_dataset_spacy:
+  #   cmd: poetry run python src/ner/spacy/prepare_traning_data.py data/annotation/annotation-result-val.json --out data/annotation/validation.spacy
+  #   deps:
+  #     - src/ner/spacy/prepare_traning_data.py
+  #     - data/annotation/annotation-result-val.json
+  #   outs:
+  #     - data/annotation/validation.spacy
 
   # spacy_install_eng_model:
   #   cmd: poetry run python -m spacy download en_core_web_trf
