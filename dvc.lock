@@ -76,7 +76,7 @@ stages:
       md5: 8b2b7ece5ca1ac9d1dbbc5b1b244a526
       size: 129848
   flair_train_ner:
-    cmd: pipenv run python ./src/ner/flair/train_ner.py
+    cmd: poetry run python ./src/ner/flair/train_ner.py
     deps:
     - path: data/annotation/annotation-result-BIO-val.txt
       md5: 8b2b7ece5ca1ac9d1dbbc5b1b244a526
@@ -84,17 +84,9 @@ stages:
     - path: data/annotation/annotation-result-BIO.txt
       md5: 7f18755701f4ec76d05641cba2a305be
       size: 1376730
-    - path: models/jobs_lm_backward
-      md5: 93093c1ffdae43cb9ca26775c53f0519.dir
-      size: 365943795
-      nfiles: 7
-    - path: models/jobs_lm_forward
-      md5: f27de30296858914b7817ea2035bab74.dir
-      size: 292741013
-      nfiles: 6
     - path: src/ner/flair/train_ner.py
-      md5: 377e78af77c05d77c31da8c8f25286b2
-      size: 4536
+      md5: c5e10a22e9d057762f45e0b9ffed11c3
+      size: 4517
     params:
       params.yaml:
         flair.ner_train.crf: true
@@ -102,9 +94,9 @@ stages:
         flair.ner_train.rnn: false
     outs:
     - path: models/flair-ner-bert
-      md5: 8be5e0b7b820c68cf630bd1dec9e7d86.dir
-      size: 998271086
-      nfiles: 7
+      md5: 6f2dbbea43c9f9f2d1ce273a175bfe01.dir
+      size: 501493701
+      nfiles: 6
   prepare_train_ner_dataset_spacy:
     cmd: poetry run python src/ner/spacy/prepare_traning_data.py data/annotation/annotation-result-orig.json
       data/annotation/annotation-result.json --out data/annotation/train.spacy

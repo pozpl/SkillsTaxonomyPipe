@@ -104,14 +104,14 @@ def train_ner_bert(epochs: int, use_crf: bool, use_rnn: bool):
     trainer = ModelTrainer(tagger, corpus)
 
     # 7. run training with XLM parameters (20 epochs, small LR, one-cycle learning rate scheduling)
-    trainer.train('models/flair-ner-bert',
+    trainer.fine_tune('models/flair-ner-bert',
                 learning_rate=5.0e-6,
-                mini_batch_size=128,
+                mini_batch_size=4,
                 mini_batch_chunk_size=2,  # remove this parameter to speed up computation if you have a big GPU
                 max_epochs=epochs,  # 10 is also good
-                scheduler=OneCycleLR,
-                embeddings_storage_mode='none',
-                weight_decay=0.,
+                # scheduler=OneCycleLR,
+                # embeddings_storage_mode='none',
+                # weight_decay=0.,
                 )
                     
 
