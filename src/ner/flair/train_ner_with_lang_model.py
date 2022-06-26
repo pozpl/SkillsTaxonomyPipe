@@ -35,7 +35,7 @@ def train_ner_with_lm(epochs: int = 150, use_crf: bool = True):
     # embeddings : StackedEmbeddings = StackedEmbeddings( embeddings=embedding_types)
 
     embeddings = StackedEmbeddings([
-                                    WordEmbeddings('crawl'),
+                                    WordEmbeddings('glove'),
                                     FlairEmbeddings('models/jobs_lm_forward/best-lm.pt'),
                                     FlairEmbeddings('models/jobs_lm_backward/best-lm.pt'),
                                 ])
