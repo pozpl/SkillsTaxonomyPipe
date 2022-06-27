@@ -44,7 +44,7 @@ def train_ner_with_lm(epochs: int = 150, use_crf: bool = True):
     tagger: SequenceTagger = SequenceTagger(hidden_size=256,
                                             embeddings=embeddings,
                                             tag_dictionary=tag_dictionary,
-                                            tag_type=tag_type,
+                                            tag_type=label_type,
                                             use_crf=use_crf) 
 
 
@@ -54,7 +54,8 @@ def train_ner_with_lm(epochs: int = 150, use_crf: bool = True):
     # 7. start training
     trainer.train('models/flair-ner-lm',
                 learning_rate=0.1,
-                mini_batch_size=64,
+                mini_batch_size=32,
+                mini_batch_chunk_size=1,  # remove this parameter to speed up computation if you have a big GPU
                 max_epochs=epochs)
 
                     
