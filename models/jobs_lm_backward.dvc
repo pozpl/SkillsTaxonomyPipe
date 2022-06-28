@@ -1,5 +1,0 @@
-outs:
-- md5: 93093c1ffdae43cb9ca26775c53f0519.dir
-  size: 365943795
-  nfiles: 7
-  path: jobs_lm_backward

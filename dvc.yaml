@@ -78,9 +78,10 @@ stages:
     params:
       - flair.language_model_train.num_epochs
     outs:
-      - models/jobs_lm_forward/best-lm.pt 
-      - models/jobs_lm_forward/checkpoint.pt:
-          checkpoint: true   
+      - models/jobs_lm_forward/best-lm.pt:
+          persist: true
+      # - models/jobs_lm_forward/checkpoint.pt:
+          # checkpoint: true   
   finetune_backward_lm:
     cmd: poetry run python src/ner/flair/train_language_model.py --out=models/jobs_lm_backward --backward
     deps:
@@ -91,9 +92,10 @@ stages:
     params:
       - flair.language_model_train.num_epochs
     outs:
-      - models/jobs_lm_backward/best-lm.pt   
-      - models/jobs_lm_backward/checkpoint.pt:
-          checkpoint: true 
+      - models/jobs_lm_backward/best-lm.pt:
+          persist: true
+      # - models/jobs_lm_backward/checkpoint.pt:
+          # checkpoint: true 
 
   flair_train_ner_with_lang_model:
     cmd: poetry run python ./src/ner/flair/train_ner_with_lang_model.py
@@ -101,5 +103,7 @@ stages:
       - src/ner/flair/train_ner_with_lang_model.py
       - data/annotation/annotation-result-BIO.txt
       - data/annotation/annotation-result-BIO-val.txt
+      - models/jobs_lm_backward/best-lm.pt
+      - models/jobs_lm_forward/best-lm.pt
     outs:
       - models/flair-ner-lm

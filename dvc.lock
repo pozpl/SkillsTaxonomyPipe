@@ -35,7 +35,7 @@ stages:
       size: 373151466
       nfiles: 100
   finetune_backward_lm:
-    cmd: pipenv run python src/ner/flair/train_language_model.py --out=models/jobs_lm_backward
+    cmd: poetry run python src/ner/flair/train_language_model.py --out=models/jobs_lm_backward
       --backward
     deps:
     - path: data/corpus/jobs/test.txt
@@ -53,14 +53,11 @@ stages:
       size: 2856
     params:
       params.yaml:
-        flair.language_model_train.num_epochs: 1
+        flair.language_model_train.num_epochs: 2
     outs:
     - path: models/jobs_lm_backward/best-lm.pt
-      md5: e75f9445cc3d863ef16eb1e8622b86fa
-      size: 73037151
-    - path: models/jobs_lm_backward/checkpoint.pt
-      md5: ab0d64e1da7ee9a4366387edab357880
-      size: 73037471
+      md5: ca1793cdab4c1634551e0b6a7294f7a8
+      size: 73037215
   prepare_annotations_val:
     cmd: poetry run python ./src/ner/convert_bliou_to_bio.py ./data/annotation/annotation-result-val.txt
       --out data/annotation/annotation-result-BIO-val.txt
@@ -130,3 +127,50 @@ stages:
       size: 132700
   spacy_install_eng_model:
     cmd: poetry run python -m spacy download en_core_web_trf
+  finetune_forward_lm:
+    cmd: poetry run python src/ner/flair/train_language_model.py --out=models/jobs_lm_forward
+      --forward
+    deps:
+    - path: data/corpus/jobs/test.txt
+      md5: e6d040005443dc7b485df62ba359f01b
+      size: 3791917
+    - path: data/corpus/jobs/train
+      md5: 14cd263f9b3a59dfff45f5cf07eb17d9.dir
+      size: 373151466
+      nfiles: 100
+    - path: data/corpus/jobs/valid.txt
+      md5: 3038a3bec712939157ca4c6186b46df5
+      size: 3872807
+    - path: src/ner/flair/train_language_model.py
+      md5: fae51be9ae8712144ae6ce4afcc333fe
+      size: 2856
+    params:
+      params.yaml:
+        flair.language_model_train.num_epochs: 2
+    outs:
+    - path: models/jobs_lm_forward/best-lm.pt
+      md5: f440f7c4f7251b36da6a4a61768692e8
+      size: 73037215
+  flair_train_ner_with_lang_model:
+    cmd: poetry run python ./src/ner/flair/train_ner_with_lang_model.py
+    deps:
+    - path: data/annotation/annotation-result-BIO-val.txt
+      md5: 8b2b7ece5ca1ac9d1dbbc5b1b244a526
+      size: 129848
+    - path: data/annotation/annotation-result-BIO.txt
+      md5: 7f18755701f4ec76d05641cba2a305be
+      size: 1376730
+    - path: models/jobs_lm_backward/best-lm.pt
+      md5: ca1793cdab4c1634551e0b6a7294f7a8
+      size: 73037215
+    - path: models/jobs_lm_forward/best-lm.pt
+      md5: f440f7c4f7251b36da6a4a61768692e8
+      size: 73037215
+    - path: src/ner/flair/train_ner_with_lang_model.py
+      md5: 71af53e13cf47221be340914352a4cc1
+      size: 2402
+    outs:
+    - path: models/flair-ner-lm
+      md5: 434c18a1cf55f85d955652de3b500f37.dir
+      size: 838964992
+      nfiles: 7

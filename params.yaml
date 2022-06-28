@@ -1,6 +1,6 @@
 flair:
   language_model_train:
-    num_epochs: 4
+    num_epochs: 2
     corpus_dir: data/corpus/jobs
   ner_train:
     num_epochs: 40
