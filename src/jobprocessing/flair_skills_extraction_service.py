@@ -1,6 +1,7 @@
 from pathlib import Path
 from flair.data import Sentence
 from flair.models import SequenceTagger
+from flair.tokenization import SegtokSentenceSplitter
 
 from entity_dto import EntityDto
 from text_preparateion_service import TextPreparationService
@@ -15,14 +16,19 @@ class FlairSkillsExtractionService:
         self.model = SequenceTagger.load(model_path)
 
     def predict(self, text) -> List[EntityDto]:
-        sentence = Sentence(text)# predict the tags
-        self.model.predict(sentence)
+        # initialize sentence splitter
+        splitter = SegtokSentenceSplitter()
+        # use splitter to split text into list of sentences
+        sentences = splitter.split(text)
+
+        self.model.predict(sentences)
         
         entities = []
-        for entity in sentence.get_spans('ner'):
-            for label in entity.labels: 
-                # print(label.value + " score " + str(label.score))
-                entities.append(EntityDto(text=entity.text, label=label.value))
+        for sentence in sentences:
+            for entity in sentence.get_spans('ner'):
+                for label in entity.labels: 
+                    # print(label.value + " score " + str(label.score))
+                    entities.append(EntityDto(text=entity.text, label=label.value))
         
         return entities
 

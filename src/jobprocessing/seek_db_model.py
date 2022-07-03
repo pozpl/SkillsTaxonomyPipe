@@ -92,7 +92,7 @@ class Vacancy(DeclarativeBase):
 
     country = relationship(Country, secondary='vacancy_country')
     city = relationship(City, secondary='vacancy_city')
-    skills = relationship(Skill, secondary='vacacny_skill')
+    skills = relationship(Skill, secondary='vacancy_skill')
 
     __table_args__ = (UniqueConstraint('uid', name='_uid_uc'),)
 

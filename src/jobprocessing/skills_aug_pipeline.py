@@ -1,3 +1,4 @@
+from entity_dto import EntityDto
 from seek_db_model import Skill, Vacancy, create_table, db_connect
 from flair_skills_extraction_service import FlairSkillsExtractionService
 from tqdm import tqdm
@@ -32,6 +33,8 @@ class SkillsAugmentationPipeline(object):
 
                 
                 flair_extracted_skills = self.flair_skills_extraction_service.predict(vacancy.title + ' ' + vacancy.description)
+                if len(flair_extracted_skills) == 0:
+                    flair_extracted_skills.append(EntityDto(text='N/A', label='SKILL'))
                 # print("=======Flair============")                
                 for skill in flair_extracted_skills: 
                     # print ('Flair srkill: ' + skill.text)

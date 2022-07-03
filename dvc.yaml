@@ -38,34 +38,34 @@ stages:
     outs:
       - models/flair-ner-bert
   
-  # prepare_train_ner_dataset_spacy:
-  #   cmd: poetry run python src/ner/spacy/prepare_traning_data.py data/annotation/annotation-result-orig.json data/annotation/annotation-result.json --out data/annotation/train.spacy
-  #   deps:
-  #     - src/ner/spacy/prepare_traning_data.py
-  #     - data/annotation/annotation-result-orig.json
-  #     - data/annotation/annotation-result.json
-  #   outs:
-  #     - data/annotation/train.spacy
+  prepare_train_ner_dataset_spacy:
+    cmd: poetry run python src/ner/spacy/prepare_traning_data.py data/annotation/annotation-result-orig.json data/annotation/annotation-result.json --out data/annotation/train.spacy
+    deps:
+      - src/ner/spacy/prepare_traning_data.py
+      - data/annotation/annotation-result-orig.json
+      - data/annotation/annotation-result.json
+    outs:
+      - data/annotation/train.spacy
   
-  # prepare_validation_ner_dataset_spacy:
-  #   cmd: poetry run python src/ner/spacy/prepare_traning_data.py data/annotation/annotation-result-val.json --out data/annotation/validation.spacy
-  #   deps:
-  #     - src/ner/spacy/prepare_traning_data.py
-  #     - data/annotation/annotation-result-val.json
-  #   outs:
-  #     - data/annotation/validation.spacy
+  prepare_validation_ner_dataset_spacy:
+    cmd: poetry run python src/ner/spacy/prepare_traning_data.py data/annotation/annotation-result-val.json --out data/annotation/validation.spacy
+    deps:
+      - src/ner/spacy/prepare_traning_data.py
+      - data/annotation/annotation-result-val.json
+    outs:
+      - data/annotation/validation.spacy
 
-  # spacy_install_eng_model:
-  #   cmd: poetry run python -m spacy download en_core_web_trf
+  spacy_install_eng_model:
+    cmd: poetry run python -m spacy download en_core_web_lg
 
-  # spacy_train_ner:
-  #   cmd: poetry run python -m spacy train config/config_gpu.cfg --output ./models/spacy-ner --paths.train ./data/annotation/train.spacy --paths.dev ./data/annotation/validation.spacy --gpu-id 0
-  #   deps:
-  #     - config/config_gpu.cfg
-  #     - data/annotation/train.spacy
-  #     - data/annotation/validation.spacy
-  #   outs: 
-  #     - models/spacy-ner
+  spacy_train_ner_cpu:
+    cmd: poetry run python -m spacy train config/config_cpu.cfg --output ./models/spacy-ner --paths.train ./data/annotation/train.spacy --paths.dev ./data/annotation/validation.spacy 
+    deps:
+      - config/config_cpu.cfg
+      - data/annotation/train.spacy
+      - data/annotation/validation.spacy
+    outs: 
+      - models/spacy-ner
     
       
   finetune_forward_lm:

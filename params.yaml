@@ -6,7 +6,7 @@ flair:
     num_epochs: 40
     crf: True
     rnn: False
-  ner_model: models/flair-ner-bert/best-model.pt
+  ner_model: models/flair-ner-bert/final-model.pt
 db: 
   jobs:
     connection_string: sqlite:///data/jobs/seek_vacancies.db 

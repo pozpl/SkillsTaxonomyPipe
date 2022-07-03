@@ -24,8 +24,8 @@ stages:
       md5: 56d1e1751fd8524bf570602a76ab6ff7
       size: 1899
     - path: data/jobs/seek_vacancies.db
-      md5: 2c1a32f46b6a7b28cfe1c572b4930f01
-      size: 550674432
+      md5: 9d0820a0e8f1da9564fb09f805bd812d
+      size: 580071424
     params:
       params.yaml:
         flair.language_model_train.corpus_dir: data/corpus/jobs
@@ -126,7 +126,7 @@ stages:
       md5: e239f5a311e903e56e6b7223454d65ed
       size: 132700
   spacy_install_eng_model:
-    cmd: poetry run python -m spacy download en_core_web_trf
+    cmd: poetry run python -m spacy download en_core_web_lg
   finetune_forward_lm:
     cmd: poetry run python src/ner/flair/train_language_model.py --out=models/jobs_lm_forward
       --forward
@@ -174,3 +174,21 @@ stages:
       md5: 434c18a1cf55f85d955652de3b500f37.dir
       size: 838964992
       nfiles: 7
+  spacy_train_ner_cpu:
+    cmd: poetry run python -m spacy train config/config_cpu.cfg --output ./models/spacy-ner
+      --paths.train ./data/annotation/train.spacy --paths.dev ./data/annotation/validation.spacy
+    deps:
+    - path: config/config_cpu.cfg
+      md5: 43e8632560893ac1afd7c96177a8a94c
+      size: 2614
+    - path: data/annotation/train.spacy
+      md5: d3e36493b1583aecc9c2c68d8116635f
+      size: 1315373
+    - path: data/annotation/validation.spacy
+      md5: e239f5a311e903e56e6b7223454d65ed
+      size: 132700
+    outs:
+    - path: models/spacy-ner
+      md5: 907687058979fd9eab32275a221fdb6b.dir
+      size: 920144500
+      nfiles: 26
